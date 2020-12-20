@@ -263,7 +263,7 @@ def get_candidate_embeddings(uttr_sys_dict, tokenizer, model):
     uttr_sys = list(uttr_sys_dict.keys())
     uttr_sys_tokens = list(uttr_sys_dict.values())
     batch_size = 100
-    for start in tqdm(range(0, len(uttr_sys), batch_size)):
+    for start in tqdm(range(0, len(uttr_sys), batch_size), ncols=80):
         if start+batch_size > len(uttr_sys):
             inputs = uttr_sys[start:]
             inputs_ids = uttr_sys_tokens[start:]
@@ -392,7 +392,7 @@ def train(args, trn_loader, dev_loader, model, tokenizer, cand_uttr_sys_dict, ot
             trn_loader = get_loader(vars(args), "train", tokenizer, others["datasets"], others["unified_meta"], "train")
         
         loss_arr, loss_mlm_arr, loss_rs_arr = [], [], []
-        epoch_iterator = tqdm(trn_loader, disable=args.local_rank not in [-1, 0])
+        epoch_iterator = tqdm(trn_loader, disable=args.local_rank not in [-1, 0], ncols=80)
         for step, batch in enumerate(epoch_iterator):
             model.train()
             
@@ -576,7 +576,7 @@ def evaluate(args, model, dev_loader, tokenizer, prefix=""):
     nb_eval_steps = 0
     model.eval()
 
-    for batch in tqdm(eval_dataloader, desc="Evaluating"):
+    for batch in tqdm(eval_dataloader, desc="Evaluating", ncols=80):
         
         inputs = batch["context"].clone()
         
@@ -955,7 +955,7 @@ def main():
             cand_uttr_sys = list(cand_uttr_sys)
             cand_uttr_sys = [s.lower() for s in cand_uttr_sys if len(s.split(" ")) <= 100] # remove too long responses
             cand_uttr_sys_tokens = []
-            for cand in tqdm(cand_uttr_sys):
+            for cand in tqdm(cand_uttr_sys, ncols=80):
                 cand_ids = tokenizer.tokenize("[CLS] [SYS]") + tokenizer.tokenize(cand)
                 cand_ids = torch.tensor(tokenizer.convert_tokens_to_ids(cand_ids))
                 cand_uttr_sys_tokens.append(cand_ids)

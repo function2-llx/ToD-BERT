@@ -1,6 +1,5 @@
 from tqdm import tqdm
 import torch.nn as nn
-import logging
 import ast
 import glob
 import numpy as np
@@ -22,11 +21,13 @@ from models.dual_encoder_ranking import *
 # hugging face models
 from transformers import *
 
+import logging
+
 try:
     from torch.utils.tensorboard import SummaryWriter
 except ImportError:
     from tensorboardX import SummaryWriter
-    
+
 ## model selection
 MODELS = {"bert": (BertModel,       BertTokenizer,       BertConfig),
           "todbert": (BertModel,       BertTokenizer,       BertConfig),
@@ -115,7 +116,7 @@ if args["do_train"]:
             for epoch in range(args["epoch"]):
                 logging.info("Epoch:{}".format(epoch+1)) 
                 train_loss = 0
-                pbar = tqdm(trn_loader)
+                pbar = tqdm(trn_loader, ncols=80)
                 for i, d in enumerate(pbar):
                     model.train()
                     outputs = model(d)
@@ -129,7 +130,7 @@ if args["do_train"]:
                         model.eval()
                         dev_loss = 0
                         preds, labels = [], []
-                        ppbar = tqdm(dev_loader)
+                        ppbar = tqdm(dev_loader, ncols=80)
                         for d in ppbar:
                             with torch.no_grad():
                                 outputs = model(d)
@@ -194,7 +195,7 @@ if args["do_train"]:
                 model.load_state_dict(torch.load(output_model_file, lambda storage, loc: storage))
         
         ## Run test set evaluation
-        pbar = tqdm(tst_loader)
+        pbar = tqdm(tst_loader, ncols=80)
         for nb_eval in range(args["nb_evals"]):
             test_loss = 0
             preds, labels = [], []
@@ -248,7 +249,7 @@ else:
         ## Start evaluating on the test set
         test_loss = 0
         preds, labels = [], []
-        pbar = tqdm(locals()["{}_loader".format(d_eval)])
+        pbar = tqdm(locals()["{}_loader".format(d_eval)], ncols=80)
         for d in pbar:
             with torch.no_grad():
                 outputs = model(d)
