@@ -193,5 +193,5 @@ if os.path.exists(args["output_dir"]) and os.listdir(args["output_dir"]) and arg
 os.makedirs(args["output_dir"], exist_ok=True)
 
 # Dictionary Predefined
-SEEDS = [23, 233, 2333, 23333, 114, 514, 19260, 817, 417, 914] # np.arange(0, 100, 5)
-
+# SEEDS = [23, 233, 2333, 23333, 114, 514, 19260, 817, 417, 914] # np.arange(0, 100, 5)
+SEEDS = [10, 5, 0, 233, 2333, 23333, 114, 514, 19260, 817, 417, 914]
