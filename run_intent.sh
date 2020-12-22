@@ -16,7 +16,7 @@ CUDA_VISIBLE_DEVICES=$gpu python main.py \
     --dataset='["oos_intent"]' \
     --task_name="intent" \
     --earlystop="acc" \
-    --output_dir=${output_dir}/Intent/OOS/seed${seed} \
+    --output_dir=${output_dir}/Intent/OOS \
     --do_train \
     --task=nlu \
     --example_type=turn \
