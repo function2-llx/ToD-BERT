@@ -1,3 +1,5 @@
+#!/bin/bash
+
 gpu=$1
 model=$2
 bert_dir=$3

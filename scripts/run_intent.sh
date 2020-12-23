@@ -7,8 +7,8 @@ output_dir=$4
 bsz=32
 
 # ./run_intent.sh 0 bert bert-base-uncased save/BERT
-# ./run_intent.sh 0 todbert TODBERT/TOD-BERT-MLM-V1 save/TOD-BERT-mlm
-# ./run_intent.sh 0 todbert TODBERT/TOD-BERT-JNT-V1 save/TOD-BERT-jnt
+# ./run_intent.sh 1 todbert TODBERT/TOD-BERT-MLM-V1 save/TOD-BERT-mlm
+# ./run_intent.sh 2 todbert TODBERT/TOD-BERT-JNT-V1 save/TOD-BERT-jnt
 
 # Intent
 CUDA_VISIBLE_DEVICES=$gpu python main.py \
@@ -25,5 +25,5 @@ CUDA_VISIBLE_DEVICES=$gpu python main.py \
     --batch_size=${bsz} \
     --usr_token=[USR] --sys_token=[SYS] \
     --epoch=50 --eval_by_step=500 --warmup_steps=250 \
-    --fix_rand_seed --nb_runs 10
+    --fix_rand_seed --nb_runs 3
 
