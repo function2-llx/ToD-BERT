@@ -24,6 +24,6 @@ CUDA_VISIBLE_DEVICES=$gpu python main.py \
     --model_name_or_path=${bert_dir} \
     --batch_size=${bsz} \
     --usr_token=[USR] --sys_token=[SYS] \
-    --epoch=50 --eval_by_step=500 --warmup_steps=250 \
+    --eval_by_step=500 --warmup_steps=250 \
     --fix_encoder \
     --fix_rand_seed --nb_runs 3

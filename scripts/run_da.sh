@@ -5,9 +5,9 @@ model=$2
 bert_dir=$3
 output_dir=$4
 
-# ./run_da.sh 0 bert bert-base-uncased save/BERT
-# ./run_da.sh 1 todbert TODBERT/TOD-BERT-MLM-V1 save/TOD-BERT-mlm
-# ./run_da.sh 2 todbert TODBERT/TOD-BERT-JNT-V1 save/TOD-BERT-jnt
+# ./scripts/run_da.sh 0 bert bert-base-uncased save/BERT
+# ./scripts/run_da.sh 1 todbert TODBERT/TOD-BERT-MLM-V1 save/TOD-BERT-mlm
+# ./scripts/run_da.sh 2 todbert TODBERT/TOD-BERT-JNT-V1 save/TOD-BERT-jnt
 
 # DA
 CUDA_VISIBLE_DEVICES=$gpu python main.py \
