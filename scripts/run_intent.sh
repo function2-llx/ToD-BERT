@@ -6,9 +6,9 @@ bert_dir=$3
 output_dir=$4
 bsz=32
 
-# ./run_intent.sh 0 bert bert-base-uncased save/BERT
-# ./run_intent.sh 1 todbert TODBERT/TOD-BERT-MLM-V1 save/TOD-BERT-mlm
-# ./run_intent.sh 2 todbert TODBERT/TOD-BERT-JNT-V1 save/TOD-BERT-jnt
+# ./scripts/run_intent.sh 0 bert bert-base-uncased save/BERT
+# ./scripts/run_intent.sh 1 todbert TODBERT/TOD-BERT-MLM-V1 save/TOD-BERT-mlm
+# ./scripts/run_intent.sh 2 todbert TODBERT/TOD-BERT-JNT-V1 save/TOD-BERT-jnt
 
 # Intent
 CUDA_VISIBLE_DEVICES=$gpu python main.py \

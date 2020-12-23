@@ -6,9 +6,9 @@ bert_dir=$3
 output_dir=$4
 bsz=32
 
-# ./probe_intent.sh 0 bert bert-base-uncased probe/BERT
-# ./probe_intent.sh 1 todbert TODBERT/TOD-BERT-MLM-V1 probe/TOD-BERT-mlm
-# ./probe_intent.sh 2 todbert TODBERT/TOD-BERT-JNT-V1 probe/TOD-BERT-jnt
+# ./scripts/probe_intent.sh 0 bert bert-base-uncased probe/BERT
+# ./scripts/probe_intent.sh 1 todbert TODBERT/TOD-BERT-MLM-V1 probe/TOD-BERT-mlm
+# ./scripts/probe_intent.sh 2 todbert TODBERT/TOD-BERT-JNT-V1 probe/TOD-BERT-jnt
 
 # Intent
 CUDA_VISIBLE_DEVICES=$gpu python main.py \

@@ -194,7 +194,8 @@ if args["do_train"]:
             else:
                 model.load_state_dict(torch.load(output_model_file, lambda storage, loc: storage))
         
-        ## Run test set evaluation
+        # Run test set evaluation
+        model.eval()
         pbar = tqdm(tst_loader, ncols=80)
         for nb_eval in range(args["nb_evals"]):
             test_loss = 0
@@ -211,7 +212,7 @@ if args["do_train"]:
             result_runs.append(results)
             logging.info("[{}] Test Results: ".format(nb_eval) + str(results))
     
-    ## Average results over runs
+    # Average results over runs
     if args["nb_runs"] > 1:
         f_out = open(os.path.join(output_dir_origin, "eval_results_multi-runs.txt"), "w")
         f_out.write("Average over {} runs and {} evals \n".format(args["nb_runs"], args["nb_evals"]))

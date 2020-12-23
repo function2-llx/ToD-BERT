@@ -74,21 +74,8 @@ class multi_class_classifier(nn.Module):
         self.optimizer.zero_grad()
         
         inputs = {"input_ids": data[self.args["input_name"]], "attention_mask":(data[self.args["input_name"]] > 0).long()}
-        
-        if self.args["fix_encoder"]:
-            with torch.no_grad():
-                if "gpt2" in self.args["model_type"]:
-                    hidden = self.utterance_encoder(**inputs)[0]
-                    hidden_head = hidden.mean(1)
-                elif self.args["model_type"] == "dialogpt":
-                    transformer_outputs = self.utterance_encoder.transformer(
-                        inputs["input_ids"],
-                        attention_mask=(inputs["input_ids"] > 0).long())[0]
-                    hidden_head = transformer_outputs.mean(1)
-                else:
-                    hidden = self.utterance_encoder(**inputs)[0]
-                    hidden_head = hidden[:, 0, :]
-        else:
+
+        with torch.set_grad_enabled(self.args['fix_encoder']):
             if "gpt2" in self.args["model_type"]:
                 hidden = self.utterance_encoder(**inputs)[0]
                 hidden_head = hidden.mean(1)
