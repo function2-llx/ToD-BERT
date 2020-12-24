@@ -68,28 +68,29 @@ class dual_encoder_ranking(nn.Module):
         start_list = list(np.arange(0, batch_size, interval))
         end_list = start_list[1:] + [None]
         context_outputs, response_outputs = [], []
-        
-        for start, end in zip(start_list, end_list):
-            
-            inputs_con = {"input_ids": data["context"][start:end],
-                          "attention_mask": (data["context"][start:end] > 0).long()}
-            inputs_res = {"input_ids": data["response"][start:end], 
-                          "attention_mask": (data["response"][start:end] > 0).long()}
-            
-            if "bert" in self.args["model_type"]:
-                _, context_output = self.utterance_encoder(**inputs_con)
-                _, response_output = self.utterance_encoder(**inputs_res)
-            elif self.args["model_type"] == "gpt2":
-                context_output = self.utterance_encoder(**inputs_con)[0].mean(1)
-                response_output = self.utterance_encoder(**inputs_res)[0].mean(1)
-            elif self.args["model_type"] == "dialogpt":
-                transformer_outputs = self.utterance_encoder.transformer(**inputs_con)
-                context_output = transformer_outputs[0].mean(1)
-                transformer_outputs = self.utterance_encoder.transformer(**inputs_res)
-                response_output = transformer_outputs[0].mean(1)
 
-            context_outputs.append(context_output.cpu())
-            response_outputs.append(response_output.cpu())
+        with torch.set_grad_enabled(not self.args['fix_encoder']):
+            for start, end in zip(start_list, end_list):
+
+                inputs_con = {"input_ids": data["context"][start:end],
+                              "attention_mask": (data["context"][start:end] > 0).long()}
+                inputs_res = {"input_ids": data["response"][start:end],
+                              "attention_mask": (data["response"][start:end] > 0).long()}
+
+                if "bert" in self.args["model_type"]:
+                    _, context_output = self.utterance_encoder(**inputs_con)
+                    _, response_output = self.utterance_encoder(**inputs_res)
+                elif self.args["model_type"] == "gpt2":
+                    context_output = self.utterance_encoder(**inputs_con)[0].mean(1)
+                    response_output = self.utterance_encoder(**inputs_res)[0].mean(1)
+                else:
+                    transformer_outputs = self.utterance_encoder.transformer(**inputs_con)
+                    context_output = transformer_outputs[0].mean(1)
+                    transformer_outputs = self.utterance_encoder.transformer(**inputs_res)
+                    response_output = transformer_outputs[0].mean(1)
+
+                context_outputs.append(context_output.cpu())
+                response_outputs.append(response_output.cpu())
         
         # evaluation for k-to-100
         if (not self.training) and (batch_size < self.args["eval_batch_size"]): 
@@ -102,7 +103,7 @@ class dual_encoder_ranking(nn.Module):
             final_context_output = final_context_output.cuda()
             final_response_output = final_response_output.cuda()
         
-        if (not self.training):
+        if not self.training:
             self.final_response_output = final_response_output.cpu()
 
         # mat

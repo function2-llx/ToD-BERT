@@ -75,7 +75,7 @@ class multi_class_classifier(nn.Module):
         
         inputs = {"input_ids": data[self.args["input_name"]], "attention_mask":(data[self.args["input_name"]] > 0).long()}
 
-        with torch.set_grad_enabled(self.args['fix_encoder']):
+        with torch.set_grad_enabled(not self.args['fix_encoder']):
             if "gpt2" in self.args["model_type"]:
                 hidden = self.utterance_encoder(**inputs)[0]
                 hidden_head = hidden.mean(1)
