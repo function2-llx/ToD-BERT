@@ -756,6 +756,7 @@ def main():
         required=False, 
         default='["multiwoz"]', 
         type=str)
+    parser.add_argument('--exclude_holdout', action='store_true', help='exclude holdout dataset from train set')
     parser.add_argument(
         '-task','--task', 
         help='task in ["nlu", "dst", "dm", "nlg", "e2e"] to decide which dataloader to use', 
@@ -941,7 +942,7 @@ def main():
             data_trn, data_dev, data_tst, data_meta = globals()["prepare_data_{}".format(ds_name)](args_dict)
             # held-out mwoz for now
             if ds_name in ast.literal_eval(args.holdout_dataset):
-                datasets[ds_name] = {"train": data_trn, "dev":data_dev, "test": data_tst, "meta":data_meta}
+                datasets[ds_name] = {"train": [] if args.exclude_holdout else data_trn, "dev":data_dev, "test": data_tst, "meta":data_meta}
             else:
                 datasets[ds_name] = {"train": data_trn + data_dev + data_tst, "dev":[], "test": [], "meta":data_meta}
 
