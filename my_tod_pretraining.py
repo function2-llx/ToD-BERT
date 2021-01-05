@@ -742,7 +742,7 @@ def main():
         '-dpath','--data_path', 
         help='path to dataset folder', 
         required=False, 
-        default='/export/home/dialog_datasets', 
+        default='data',
         type=str)
     parser.add_argument(
         '-ds','--dataset', 
@@ -943,6 +943,8 @@ def main():
             # held-out mwoz for now
             if ds_name in ast.literal_eval(args.holdout_dataset):
                 datasets[ds_name] = {"train": [] if args.exclude_holdout else data_trn, "dev":data_dev, "test": data_tst, "meta":data_meta}
+                if args.exclude_holdout:
+                    print(f'exclude {ds_name} from train set')
             else:
                 datasets[ds_name] = {"train": data_trn + data_dev + data_tst, "dev":[], "test": [], "meta":data_meta}
 
